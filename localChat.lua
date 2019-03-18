@@ -6,7 +6,7 @@ function localMessage(player, _, ...)
     local stringT
     if not team then
         r, g, b = 255, 255, 255
-        startText = ("#%02x%02x%02x"):format(255, 0, 0) .. "LocalChat: " .. ("#%02x%02x%02x"):format(255, 255, 255)
+        startText = ("#%02x%02x%02x"):format(255, 0, 0) .. "LocalChat: " .. ("#%02x%02x%02x"):format(r,g,b)
     else
         r, g, b = getTeamColor(team)
         startText = ("#%02x%02x%02x"):format(r, g, b) .. "LocalChat: "
