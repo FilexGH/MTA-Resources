@@ -51,26 +51,26 @@ function onButtonClick()
         if crackingPadElements == nil then
             return
         end
-        if source ~= crackingPadElements.window then
-            if button == source then
-                if crackingPadElements.edit:getText() == "HIGHER" or crackingPadElements.edit:getText() == "LOWER" then
-                    crackingPadElements.edit:setText("")
-                end
-                if _index == "buttonEnter" then
-                    onEnterButtonOrKeyClick()
-                elseif _index == "buttonDelete" then
-                    onDeleteButtonOrKeyClick()
-                else
-                    local value = _index:gsub("button", "")
-                    local editValue = crackingPadElements.edit:getText()
-                    crackingPadElements.edit:setText(editValue .. value)
-                end
-            end
-        else
+        if source == crackingPadElements.window or source == crackingPadElements.edit then
             return
+        end
+        if button == source then
+            if crackingPadElements.edit:getText() == "HIGHER" or crackingPadElements.edit:getText() == "LOWER" then
+                crackingPadElements.edit:setText("")
+            end
+            if _index == "buttonEnter" then
+                onEnterButtonOrKeyClick()
+            elseif _index == "buttonDelete" then
+                onDeleteButtonOrKeyClick()
+            else
+                local value = _index:gsub("button", "")
+                local editValue = crackingPadElements.edit:getText()
+                crackingPadElements.edit:setText(editValue .. value)
+            end
         end
     end
 end
+
  
 function onKeyPress(key, pOr)
     if crackingPadElements == nil then
