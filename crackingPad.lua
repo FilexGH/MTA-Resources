@@ -86,7 +86,7 @@ function onKeyPress(key, pOr)
                 crackingPadElements.edit:setText(editValue .. keyValue)
             end
         end
-         if key == "num_enter" or key == "enter" then
+        if key == "num_enter" or key == "enter" then
             onEnterButtonOrKeyClick()
         elseif key == "backspace" then
             onDeleteButtonOrKeyClick()
