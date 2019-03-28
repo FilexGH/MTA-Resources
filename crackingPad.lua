@@ -1,3 +1,4 @@
+-- In order to use don't forget to set oop on (<oop>true</oop>) in meta.xml file
 local crackingPadElements = nil
 local randomNumber
 local keys = {
