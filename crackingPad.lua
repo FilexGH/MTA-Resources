@@ -20,7 +20,7 @@ function startCracking()
     -- For now you will need to set the interval yourself i will add a small system for that soon
     randomNumber = math.random(0, 100)
     addEventHandler("onClientGUIClick", getRootElement(), onButtonClick)
-    addEventHandler("onClientKey", getRootElement(), onKeyClick)
+    addEventHandler("onClientKey", getRootElement(), onKeyPress)
 end
 addCommandHandler("start", startCracking)
  
