@@ -72,7 +72,7 @@ function onButtonClick()
     end
 end
  
-function onKeyClick(key, pOr)
+function onKeyPress(key, pOr)
     if crackingPadElements == nil then
         return
     end
@@ -84,11 +84,12 @@ function onKeyClick(key, pOr)
             if _index:find(key) ~= nil then
                 local editValue = crackingPadElements.edit:getText()
                 crackingPadElements.edit:setText(editValue .. keyValue)
-            elseif key == "num_enter" or key == "enter" then
-                onEnterButtonOrKeyClick()
-            elseif key == "backspace" then
-                onDeleteButtonOrKeyClick()
             end
+        end
+         if key == "num_enter" or key == "enter" then
+            onEnterButtonOrKeyClick()
+        elseif key == "backspace" then
+            onDeleteButtonOrKeyClick()
         end
     end
 end
@@ -118,7 +119,7 @@ function onEnterButtonOrKeyClick()
         crackingPadElements.edit:setText("HIGHER")
     elseif value == randomNumber then
         removeEventHandler("onClientGUIClick", getRootElement(), onButtonClick)
-        removeEventHandler("onClientKey", getRootElement(), onKeyClick)
+        removeEventHandler("onClientKey", getRootElement(), onKeyPress)
         showCursor(false)
         crackingPadElements.window:destroy()
         crackingPadElements = nil
