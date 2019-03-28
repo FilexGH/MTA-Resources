@@ -16,10 +16,10 @@ local keys = {
 function startCracking()
     showCursor(true)
     makeCrackingTab()
+    -- For now you will need to set the interval yourself i will add a small system for that soon
     randomNumber = math.random(0, 100)
     addEventHandler("onClientGUIClick", getRootElement(), onButtonClick)
     addEventHandler("onClientKey", getRootElement(), onKeyClick)
-    iprint(randomNumber)
 end
 addCommandHandler("start", startCracking)
  
