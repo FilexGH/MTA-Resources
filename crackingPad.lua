@@ -15,6 +15,9 @@ local keys = {
 }
  
 function startCracking()
+    if crackingPadElements ~= nil then 
+        return 
+    end 
     showCursor(true)
     makeCrackingTab()
     -- For now you will need to set the interval yourself i will add a small system for that soon
