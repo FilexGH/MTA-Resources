@@ -1,6 +1,9 @@
 -- In order to use don't forget to set oop on (<oop>true</oop>) in meta.xml file
 local crackingPadElements = nil
+local chooseNumberElements = nil
 local randomNumber
+local startTime
+local endTime
 local keys = {
     num_0 = 0,
     num_1 = 1,
@@ -13,20 +16,61 @@ local keys = {
     num_8 = 8,
     num_9 = 9
 }
- 
-function startCracking()
-    if crackingPadElements ~= nil then 
-        return 
-    end 
+
+function chooseNumber()
+    if crackingPadElements ~= nil or chooseNumberElements ~= nil then
+        return
+    end
     showCursor(true)
+    createChooseTab()
+    addEventHandler("onClientGUIClick", chooseNumberElements.buttonClose, onChooseCloseButtonClick, false)
+    addEventHandler("onClientGUIClick", chooseNumberElements.buttonStart, onChooseStartButtonClick, false)
+end
+addCommandHandler("start", chooseNumber)
+
+function createChooseTab()
+    chooseNumberElements = {}
+    local screenW, screenH = guiGetScreenSize()
+    chooseNumberElements.window =
+        GuiWindow((screenW - 195) / 2, (screenH - 116) / 2, 195, 116, "Cracking Pad - Number Interval", false)
+    chooseNumberElements.window:setSizable(false)
+    chooseNumberElements.window:setMovable(false)
+    chooseNumberElements.buttonStart = GuiButton(9, 79, 173, 26, "Start", false, chooseNumberElements.window)
+    chooseNumberElements.buttonClose = GuiButton(160, 23, 22, 22, "X", false, chooseNumberElements.window)
+    chooseNumberElements.edit = GuiEdit(10, 51, 172, 23, "", false, chooseNumberElements.window)
+    chooseNumberElements.label =
+        GuiLabel(13, 25, 165, 20, "Insert a maximum interval", false, chooseNumberElements.window)
+end
+
+function onChooseCloseButtonClick()
+    removeEventHandler("onClientGUIClick", chooseNumberElements.buttonClose, onChooseCloseButtonClick)
+    removeEventHandler("onClientGUIClick", chooseNumberElements.buttonStart, onChooseStartButtonClick)
+    chooseNumberElements.window:destroy()
+    chooseNumberElements = nil
+    showCursor(false)
+end
+
+function onChooseStartButtonClick()
+    local interval = tonumber(chooseNumberElements.edit:getText())
+    if interval then
+        removeEventHandler("onClientGUIClick", chooseNumberElements.buttonClose, onChooseCloseButtonClick)
+        removeEventHandler("onClientGUIClick", chooseNumberElements.buttonStart, onChooseStartButtonClick)
+        startCracking(interval)
+        chooseNumberElements.window:destroy()
+        chooseNumberElements = nil
+    else
+        outputChatBox("Please provide a valid number.", 255, 0, 0)
+    end
+end
+
+function startCracking(interval)
     makeCrackingTab()
-    -- For now you will need to set the interval yourself i will add a small system for that soon
-    randomNumber = math.random(0, 100)
+    startTime = getTickCount()
+    randomNumber = math.random(0, interval)
     addEventHandler("onClientGUIClick", getRootElement(), onButtonClick)
     addEventHandler("onClientKey", getRootElement(), onKeyPress)
 end
-addCommandHandler("start", startCracking)
- 
+
 function makeCrackingTab()
     crackingPadElements = {}
     local screenW, screenH = guiGetScreenSize()
@@ -48,7 +92,7 @@ function makeCrackingTab()
     crackingPadElements.buttonEnter = GuiButton(163, 278, 73, 67, "ENTER", false, crackingPadElements.window)
     crackingPadElements.buttonDelete = GuiButton(11, 278, 73, 67, "#", false, crackingPadElements.window)
 end
- 
+
 function onButtonClick()
     for _index, button in pairs(crackingPadElements) do
         if crackingPadElements == nil then
@@ -74,7 +118,6 @@ function onButtonClick()
     end
 end
 
- 
 function onKeyPress(key, pOr)
     if crackingPadElements == nil then
         return
@@ -96,7 +139,7 @@ function onKeyPress(key, pOr)
         end
     end
 end
- 
+
 function onDeleteButtonOrKeyClick()
     if crackingPadElements == nil then
         return
@@ -106,7 +149,7 @@ function onDeleteButtonOrKeyClick()
     editValue = editValue:sub(0, editValueLenght - 1)
     crackingPadElements.edit:setText(editValue)
 end
- 
+
 function onEnterButtonOrKeyClick()
     if crackingPadElements == nil then
         return
@@ -126,5 +169,9 @@ function onEnterButtonOrKeyClick()
         showCursor(false)
         crackingPadElements.window:destroy()
         crackingPadElements = nil
+        endTime = getTickCount()
+        local timeSpent = math.floor((endTime - startTime) * 10 ^ -3)
+        outputChatBox("You have spent " .. timeSpent .. " seconds to crack this number", 0, 255, 0)
+        chooseNumber()
     end
 end
